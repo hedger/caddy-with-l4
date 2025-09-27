@@ -1,0 +1,11 @@
+# Git
+.git
+.github
+.gitignore
+
+# Documentation
+README.md
+LICENSE
+
+# Miscellaneous
+.dockerignore
