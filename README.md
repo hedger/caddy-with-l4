@@ -10,27 +10,30 @@ You can pull the image from GitHub Container Registry:
 docker pull ghcr.io/hedger/caddy-with-l4:latest
 ```
 
+Recent versioned tags are also available—images are rebuilt whenever upstream ships a new release:
+
+```bash
+# pin to the most recent upstream Caddy tag
+docker pull ghcr.io/hedger/caddy-with-l4:2.10.2
+```
+
 ## Features
 
 - Caddy web server with L4 TCP/UDP proxy capabilities
-- Customizable Caddy version through build arguments
-- GitHub Actions workflow for automated building and publishing
+- Customizable Caddy version through the `CADDY_VERSION` build argument
+- Automated release detection and rebuilds for new upstream Caddy versions
+- CI-powered Docker build, publish, and smoke test workflows
+- Published GHCR packages tracking the latest stable Caddy releases
 
-## GitHub Workflows
+## Automation
 
-### Build and Publish Workflow
-
-The repository includes a GitHub workflow that:
-
-1. Builds the Docker image on push to main branch
-2. Builds on pull requests (without publishing)
-3. Publishes to GitHub Container Registry when merged to main
-4. Creates versioned tags when GitHub releases are created
-5. Allows manual builds with custom Caddy versions
+| Workflow | Schedule / Trigger | Purpose |
+| --- | --- | --- |
+| `check-caddy-version.yml` | Weekly (Mon 00:00 UTC) or manual | Fetches the latest upstream Caddy release, checks GHCR for an existing image tag, and triggers a rebuild only when needed. |
+| `docker-build-publish.yml` | Pushes to `main`, tags `v*`, manual dispatch, or reusable call | Builds the image, applies standard tags (`latest`, ref-based, and the requested version), and publishes to GHCR when not on a pull request. |
+| `test-docker-build.yml` | Pull requests touching the Dockerfile or build workflow | Builds the image matrix (`2`, `2.7.4`) without pushing and verifies the binary responds with `caddy version` and exposes the L4 module. |
 
 ## Building Locally
-
-To build the Docker image locally with a specific Caddy version:
 
 ```bash
 docker build --build-arg CADDY_VERSION=2.7.4 -t caddy-with-l4:2.7.4 .
