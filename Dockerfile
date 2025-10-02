@@ -5,7 +5,9 @@ ARG CADDY_VERSION=2
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
 RUN xcaddy build \
-    --with github.com/mholt/caddy-l4
+    --with github.com/mholt/caddy-l4 \
+    --with github.com/caddy-dns/acmedns \
+    --with github.com/caddy-dns/he 
 
 # Stage 2: Create the final Caddy image
 FROM caddy:${CADDY_VERSION}-alpine

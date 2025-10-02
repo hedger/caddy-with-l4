@@ -2,6 +2,8 @@
 
 This repository provides a Docker image of [Caddy](https://caddyserver.com/) with the [L4 addon](https://github.com/mholt/caddy-l4) pre-installed.
 
+The image also bundles the [`acmedns`](https://github.com/caddy-dns/acmedns) and [`he`](https://github.com/caddy-dns/he) DNS modules so you can solve ACME challenges with either provider out of the box.
+
 ## Usage
 
 You can pull the image from GitHub Container Registry:
@@ -24,6 +26,7 @@ docker pull ghcr.io/hedger/caddy-with-l4:2.10.2
 - Automated release detection and rebuilds for new upstream Caddy versions
 - CI-powered Docker build, publish, and smoke test workflows
 - Published GHCR packages tracking the latest stable Caddy releases
+- Included DNS providers: `acmedns` and `he`
 
 ## Automation
 
